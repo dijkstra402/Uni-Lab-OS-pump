@@ -61,6 +61,25 @@ Push 代码后，GitHub Actions 会自动运行 `--check_mode` 验证设备定�
 3. 在 `requirements.txt` 中追加所需依赖；
 4. 保持 action 名称、参数名与 property 名称不变，以确保跨品牌工作流兼容。
 
+### 落地示例：Chemyx 注射泵（`syringe_pump/chemyx_syringe_pump.py`）
+
+`ChemyxSyringePump` 继承标准类 `SyringePump`，把标准动作映射到 Chemyx 私有命令：
+
+| 标准动作 | Chemyx 命令实现 |
+|---------|----------------|
+| `initialize()` | `openConnection()` + `setDiameter()` / `setUnits()` |
+| `move_absolute(position)` | `setVolume(position)` + `startPump()` |
+| `aspirate(aspirate_position)` | `setVolume(+vol)` + `startPump()` |
+| `dispense(dispense_position)` | `setVolume(-vol)` + `startPump()` |
+| `status` (property) | `getPumpStatus()` |
+| `current_position` (property) | `getDisplacedVolume()` |
+
+要点：
+
+- 用新的 `@device(id="syringe_pump_chemyx", category=["注射泵"])`，**`category` 与标准类同一大类**，工作流即可跨品牌识别；
+- 方法名 / 参数名 / property 名全部沿用标准模板，换品牌不必改工作流；
+- `status`、`current_position` 重写为读取真实硬件；`fault`、`fault_code` 直接继承父类。
+
 ## License
 
 MIT
