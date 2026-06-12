@@ -3,15 +3,13 @@ requires = ["setuptools>=68.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "device_package_example"
+name = "syringe_pump"
 version = "0.1.0"
-description = "Uni-Lab-OS external device package example"
+description = "Uni-Lab-OS 注射泵标准设备类模板 (Syringe Pump device class template)"
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
-dependencies = [
-    "rich",
-]
+dependencies = []
 
 [project.optional-dependencies]
 dev = [
@@ -19,4 +17,4 @@ dev = [
 ]
 
 [tool.setuptools.packages.find]
-include = ["device_package_example*"]
+include = ["syringe_pump*"]
